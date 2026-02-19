@@ -18,13 +18,13 @@ type mt = Run.matcher_token
 external create_parser :
   unit -> Tree_sitter_API.ts_parser = "octs_create_parser_ocaml"
 
-let parse_source_string ?src_file contents =
+let parse_source_string ?timeout_micros ?src_file contents =
   let ts_parser = create_parser () in
-  Tree_sitter_parsing.parse_source_string ?src_file ts_parser contents
+  Tree_sitter_parsing.parse_source_string ?timeout_micros ?src_file ts_parser contents
 
-let parse_source_file src_file =
+let parse_source_file ?timeout_micros src_file =
   let ts_parser = create_parser () in
-  Tree_sitter_parsing.parse_source_file ts_parser src_file
+  Tree_sitter_parsing.parse_source_file ?timeout_micros ts_parser src_file
 
 let extras = [
   "comment";
@@ -12011,11 +12011,11 @@ let parse_input_tree input_tree =
   in
   Parsing_result.create src opt_program extras errors
 
-let string ?src_file contents =
-  let input_tree = parse_source_string ?src_file contents in
+let string ?timeout_micros ?src_file contents =
+  let input_tree = parse_source_string ?timeout_micros ?src_file contents in
   parse_input_tree input_tree
 
-let file src_file =
-  let input_tree = parse_source_file src_file in
+let file ?timeout_micros src_file =
+  let input_tree = parse_source_file ?timeout_micros src_file in
   parse_input_tree input_tree
 
